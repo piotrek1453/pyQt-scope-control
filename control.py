@@ -2,11 +2,11 @@ import pyvisa as visa
 
 
 class Oscilloscope:
-    def __init__(self, ip) -> None:
+    def __init__(self, ip: str) -> None:
         """ " Connect to instrument, create new Oscilloscope object"""
         self.rm = visa.ResourceManager("@sim")
         # self.inst = self.rm.open_resource(self.rm.list_resources()[0], read_termination='\n') # for testing purposes
-        self.inst = self.rm.open_resource("TCPIP0::192.168.0." + ip + "::INSTR")
+        self.inst = self.rm.open_resource("TCPIP0::192.168.0." + str(ip) + "::INSTR")
         self.idn = self.inst.query("*IDN?")
         print("connection successful \n" + "IDN: \n" + self.idn + "\n\n")
 

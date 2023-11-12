@@ -37,32 +37,43 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayoutTop">
      <item>
-      <widget class="QTextEdit" name="textEditIP">
-       <property name="enabled">
-        <bool>true</bool>
+      <widget class="QLabel" name="labelPosition_2">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
        </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
        </property>
-       <property name="placeholderText">
-        <string>Adres IP urządzenia:</string>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonConnect">
        <property name="text">
-        <string>Połącz</string>
+        <string>Kanał</string>
        </property>
-       <property name="checkable">
-        <bool>true</bool>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox">
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>4</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonAutoscale">
+       <property name="text">
+        <string>Automatyczne ustawienie</string>
        </property>
       </widget>
      </item>

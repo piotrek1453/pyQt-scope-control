@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import _thread
 
 # Form implementation generated from reading ui file 'front_panel.ui'
 #
@@ -9,6 +10,9 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from control import Oscilloscope
+import threading
+import time
 
 
 class Ui_MainWindow(object):
@@ -25,29 +29,31 @@ class Ui_MainWindow(object):
         self.verticalLayoutTop = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayoutTop.setContentsMargins(0, 0, 0, 0)
         self.verticalLayoutTop.setObjectName("verticalLayoutTop")
-        self.textEditIP = QtWidgets.QTextEdit(self.verticalLayoutWidget)
-        self.textEditIP.setEnabled(True)
-        self.textEditIP.setAcceptDrops(False)
-        self.textEditIP.setObjectName("textEditIP")
-        self.verticalLayoutTop.addWidget(self.textEditIP)
-        self.line_2 = QtWidgets.QFrame(self.verticalLayoutWidget)
-        self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_2.setObjectName("line_2")
-        self.verticalLayoutTop.addWidget(self.line_2)
-        self.pushButtonConnect = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.pushButtonConnect.setCheckable(True)
-        self.pushButtonConnect.setObjectName("pushButtonConnect")
-        self.verticalLayoutTop.addWidget(self.pushButtonConnect)
+        self.labelPosition_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.labelPosition_2.setFont(font)
+        self.labelPosition_2.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.labelPosition_2.setFrameShape(QtWidgets.QFrame.Box)
+        self.labelPosition_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.labelPosition_2.setObjectName("labelPosition_2")
+        self.verticalLayoutTop.addWidget(self.labelPosition_2)
+        self.spinBox = QtWidgets.QSpinBox(self.verticalLayoutWidget)
+        self.spinBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.spinBox.setMinimum(1)
+        self.spinBox.setMaximum(4)
+        self.spinBox.setObjectName("spinBox")
+        self.verticalLayoutTop.addWidget(self.spinBox)
+        self.pushButtonAutoscale = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.pushButtonAutoscale.setObjectName("pushButtonAutoscale")
+        self.verticalLayoutTop.addWidget(self.pushButtonAutoscale)
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(10, 440, 171, 131))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.verticalLayoutWidget_2.setFont(font)
         self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
-        self.verticalLayoutBottomFarLeft = QtWidgets.QVBoxLayout(
-            self.verticalLayoutWidget_2
-        )
+        self.verticalLayoutBottomFarLeft = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
         self.verticalLayoutBottomFarLeft.setContentsMargins(0, 0, 0, 0)
         self.verticalLayoutBottomFarLeft.setObjectName("verticalLayoutBottomFarLeft")
         self.labelVerticalOffsetValue = QtWidgets.QLabel(self.verticalLayoutWidget_2)
@@ -65,13 +71,9 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.verticalLayoutWidget_3.setFont(font)
         self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
-        self.verticalLayoutBottomCenterLeft = QtWidgets.QVBoxLayout(
-            self.verticalLayoutWidget_3
-        )
+        self.verticalLayoutBottomCenterLeft = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayoutBottomCenterLeft.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayoutBottomCenterLeft.setObjectName(
-            "verticalLayoutBottomCenterLeft"
-        )
+        self.verticalLayoutBottomCenterLeft.setObjectName("verticalLayoutBottomCenterLeft")
         self.labelHorizontalOffsetValue = QtWidgets.QLabel(self.verticalLayoutWidget_3)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -87,54 +89,36 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.verticalLayoutWidget_4.setFont(font)
         self.verticalLayoutWidget_4.setObjectName("verticalLayoutWidget_4")
-        self.verticalLayoutBottomCenterRight = QtWidgets.QVBoxLayout(
-            self.verticalLayoutWidget_4
-        )
+        self.verticalLayoutBottomCenterRight = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_4)
         self.verticalLayoutBottomCenterRight.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayoutBottomCenterRight.setObjectName(
-            "verticalLayoutBottomCenterRight"
-        )
-        self.labelVerticalAmplificationValue = QtWidgets.QLabel(
-            self.verticalLayoutWidget_4
-        )
+        self.verticalLayoutBottomCenterRight.setObjectName("verticalLayoutBottomCenterRight")
+        self.labelVerticalAmplificationValue = QtWidgets.QLabel(self.verticalLayoutWidget_4)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.labelVerticalAmplificationValue.setFont(font)
         self.labelVerticalAmplificationValue.setFrameShape(QtWidgets.QFrame.Box)
         self.labelVerticalAmplificationValue.setFrameShadow(QtWidgets.QFrame.Plain)
         self.labelVerticalAmplificationValue.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelVerticalAmplificationValue.setObjectName(
-            "labelVerticalAmplificationValue"
-        )
-        self.verticalLayoutBottomCenterRight.addWidget(
-            self.labelVerticalAmplificationValue
-        )
+        self.labelVerticalAmplificationValue.setObjectName("labelVerticalAmplificationValue")
+        self.verticalLayoutBottomCenterRight.addWidget(self.labelVerticalAmplificationValue)
         self.verticalLayoutWidget_5 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget_5.setGeometry(QtCore.QRect(620, 440, 171, 131))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.verticalLayoutWidget_5.setFont(font)
         self.verticalLayoutWidget_5.setObjectName("verticalLayoutWidget_5")
-        self.verticalLayoutBottomFarRight = QtWidgets.QVBoxLayout(
-            self.verticalLayoutWidget_5
-        )
+        self.verticalLayoutBottomFarRight = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_5)
         self.verticalLayoutBottomFarRight.setContentsMargins(0, 0, 0, 0)
         self.verticalLayoutBottomFarRight.setObjectName("verticalLayoutBottomFarRight")
-        self.labelHorizontalAmplificationValue = QtWidgets.QLabel(
-            self.verticalLayoutWidget_5
-        )
+        self.labelHorizontalAmplificationValue = QtWidgets.QLabel(self.verticalLayoutWidget_5)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.labelHorizontalAmplificationValue.setFont(font)
         self.labelHorizontalAmplificationValue.setFrameShape(QtWidgets.QFrame.Box)
         self.labelHorizontalAmplificationValue.setFrameShadow(QtWidgets.QFrame.Plain)
         self.labelHorizontalAmplificationValue.setAlignment(QtCore.Qt.AlignCenter)
-        self.labelHorizontalAmplificationValue.setObjectName(
-            "labelHorizontalAmplificationValue"
-        )
-        self.verticalLayoutBottomFarRight.addWidget(
-            self.labelHorizontalAmplificationValue
-        )
+        self.labelHorizontalAmplificationValue.setObjectName("labelHorizontalAmplificationValue")
+        self.verticalLayoutBottomFarRight.addWidget(self.labelHorizontalAmplificationValue)
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 110, 781, 31))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
@@ -216,47 +200,29 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.spinBox.setValue(1)
+        self.scope = Oscilloscope('100')
+        self.ch = self.spinBox.value()
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        _thread.start_new_thread(self.refresh, (1,))
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(
-            _translate("MainWindow", "SIX SIGMA pyQt-scope-control")
-        )
-        self.textEditIP.setPlaceholderText(
-            _translate("MainWindow", "Adres IP urządzenia:")
-        )
-        self.pushButtonConnect.setText(_translate("MainWindow", "Połącz"))
-        self.labelVerticalOffsetValue.setText(
-            _translate(
-                "MainWindow",
-                "<html><head/><body><p><span style=\" font-family:'sans-serif'; color:#202122; background-color:#f8f9fa;\">↕</span></p><p><span style=\" font-family:'sans-serif'; color:#202122; background-color:#f8f9fa;\">Wartość: </span></p></body></html>",
-            )
-        )
-        self.labelHorizontalOffsetValue.setText(
-            _translate(
-                "MainWindow",
-                "<html><head/><body><p><span style=\" font-family:'sans-serif'; color:#202122; background-color:#f8f9fa;\">↔</span></p><p><span style=\" font-family:'sans-serif'; color:#202122; background-color:#f8f9fa;\">Wartość: </span></p></body></html>",
-            )
-        )
-        self.labelVerticalAmplificationValue.setText(
-            _translate(
-                "MainWindow",
-                "<html><head/><body><p><span style=\" font-family:'sans-serif'; color:#202122; background-color:#f8f9fa;\">↕</span></p><p><span style=\" font-family:'sans-serif'; color:#202122; background-color:#f8f9fa;\">Wartość: </span></p></body></html>",
-            )
-        )
-        self.labelHorizontalAmplificationValue.setText(
-            _translate(
-                "MainWindow",
-                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
-                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
-                "p, li { white-space: pre-wrap; }\n"
-                "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:14pt; font-weight:400; font-style:normal;\">\n"
-                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;">↔</span></p>\n'
-                '<p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;">Wartość: </span></p></body></html>',
-            )
-        )
+        MainWindow.setWindowTitle(_translate("MainWindow", "SIX SIGMA pyQt-scope-control"))
+        self.labelPosition_2.setText(_translate("MainWindow", "Kanał"))
+        self.pushButtonAutoscale.setText(_translate("MainWindow", "Automatyczne ustawienie"))
+        self.labelVerticalOffsetValue.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;\">↕</span></p><p><span style=\" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;\">Wartość: </span></p></body></html>"))
+        self.labelHorizontalOffsetValue.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;\">↔</span></p><p><span style=\" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;\">Wartość: </span></p></body></html>"))
+        self.labelVerticalAmplificationValue.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;\">↕</span></p><p><span style=\" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;\">Wartość: </span></p></body></html>"))
+        self.labelHorizontalAmplificationValue.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:14pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;\">↔</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'sans-serif\'; color:#202122; background-color:#f8f9fa;\">Wartość: </span></p></body></html>"))
         self.labelPosition.setText(_translate("MainWindow", "Pozycja"))
         self.labelAmplification.setText(_translate("MainWindow", "Wzmocnienie"))
         self.pushButton.setText(_translate("MainWindow", "↓"))
@@ -268,10 +234,23 @@ class Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "→"))
         self.pushButton_8.setText(_translate("MainWindow", "←"))
 
+    def refresh(self, delay):
+        while True:
+            self.pushButtonAutoscale.clicked.connect(self.scope.autoscale)
+            self.pushButton_2.clicked.connect(lambda: self.scope.set_vertical_offset("up", self.spinBox.value()))
+            self.pushButton.clicked.connect(lambda: self.scope.set_vertical_offset("down", self.spinBox.value()))
+            self.pushButton_6.clicked.connect(lambda: self.scope.set_horizontal_offset("left"))
+            self.pushButton_5.clicked.connect(lambda: self.scope.set_horizontal_offset("right"))
+            self.pushButton_4.clicked.connect(lambda: self.scope.set_vertical_amplification("up", self.spinBox.value()))
+            self.pushButton_3.clicked.connect(lambda: self.scope.set_vertical_amplification("down", self.spinBox.value()))
+            self.pushButton_8.clicked.connect(lambda: self.scope.set_timebase("left"))
+            self.pushButton_7.clicked.connect(lambda: self.scope.set_timebase("right"))
+            print(self.spinBox.value())
+            time.sleep(delay)
+
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
