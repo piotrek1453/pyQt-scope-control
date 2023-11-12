@@ -200,9 +200,7 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.spinBox.setValue(1)
         self.scope = Oscilloscope('100')
-        self.ch = self.spinBox.value()
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
