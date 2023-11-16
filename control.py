@@ -4,7 +4,7 @@ import pyvisa as visa
 class Oscilloscope:
     def __init__(self, ip: str) -> None:
         """ " Connect to instrument, create new Oscilloscope object"""
-        self.rm = visa.ResourceManager("@sim")
+        self.rm = visa.ResourceManager()
         # self.inst = self.rm.open_resource(self.rm.list_resources()[0], read_termination='\n') # for testing purposes
         self.inst = self.rm.open_resource("TCPIP0::192.168.0." + str(ip) + "::INSTR")
         self.idn = self.inst.query("*IDN?")
@@ -13,6 +13,7 @@ class Oscilloscope:
     def autoscale(self) -> None:
         """ " Let the instrument set its parameters automatically"""
         self.inst.write("AUToscale")
+        print("autosc")
 
     def get_channel_state(self, ch: int) -> int:
         """ " Check if channel is displayed"""

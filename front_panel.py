@@ -228,7 +228,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        _thread.start_new_thread(self.refresh, (1,))
+        #thread.start_new_thread(self.refresh, (10,))
+        #x = threading.Thread(target=self.refresh, args=(1,), daemon=True)
+        #x.start()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -279,36 +281,61 @@ class Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "→"))
         self.pushButton_8.setText(_translate("MainWindow", "←"))
 
-    def refresh(self, delay):
-        while True:
-            self.pushButtonAutoscale.clicked.connect(self.scope.autoscale)
-            self.pushButton_2.clicked.connect(
-                lambda: self.scope.set_vertical_offset("up", self.spinBox.value())
+        self.pushButtonAutoscale.clicked.connect(self.scope.autoscale)
+        self.pushButton_2.clicked.connect(
+            lambda: self.scope.set_vertical_offset("up", self.spinBox.value())
+        )
+        self.pushButton.clicked.connect(
+            lambda: self.scope.set_vertical_offset("down", self.spinBox.value())
+        )
+        self.pushButton_6.clicked.connect(
+            lambda: self.scope.set_horizontal_offset("left")
+        )
+        self.pushButton_5.clicked.connect(
+            lambda: self.scope.set_horizontal_offset("right")
+        )
+        self.pushButton_4.clicked.connect(
+            lambda: self.scope.set_vertical_amplification(
+                "up", self.spinBox.value()
             )
-            self.pushButton.clicked.connect(
-                lambda: self.scope.set_vertical_offset("down", self.spinBox.value())
+        )
+        self.pushButton_3.clicked.connect(
+            lambda: self.scope.set_vertical_amplification(
+                "down", self.spinBox.value()
             )
-            self.pushButton_6.clicked.connect(
-                lambda: self.scope.set_horizontal_offset("left")
-            )
-            self.pushButton_5.clicked.connect(
-                lambda: self.scope.set_horizontal_offset("right")
-            )
-            self.pushButton_4.clicked.connect(
-                lambda: self.scope.set_vertical_amplification(
-                    "up", self.spinBox.value()
-                )
-            )
-            self.pushButton_3.clicked.connect(
-                lambda: self.scope.set_vertical_amplification(
-                    "down", self.spinBox.value()
-                )
-            )
-            self.pushButton_8.clicked.connect(lambda: self.scope.set_timebase("left"))
-            self.pushButton_7.clicked.connect(lambda: self.scope.set_timebase("right"))
-            print(self.spinBox.value())
-            time.sleep(delay)
+        )
+        self.pushButton_8.clicked.connect(lambda: self.scope.set_timebase("left"))
+        self.pushButton_7.clicked.connect(lambda: self.scope.set_timebase("right"))
 
+    # def refresh(self, delay):
+    #     while True:
+    #         self.pushButtonAutoscale.clicked.connect(self.scope.autoscale)
+    #         self.pushButton_2.clicked.connect(
+    #             lambda: self.scope.set_vertical_offset("up", self.spinBox.value())
+    #         )
+    #         self.pushButton.clicked.connect(
+    #             lambda: self.scope.set_vertical_offset("down", self.spinBox.value())
+    #         )
+    #         self.pushButton_6.clicked.connect(
+    #             lambda: self.scope.set_horizontal_offset("left")
+    #         )
+    #         self.pushButton_5.clicked.connect(
+    #             lambda: self.scope.set_horizontal_offset("right")
+    #         )
+    #         self.pushButton_4.clicked.connect(
+    #             lambda: self.scope.set_vertical_amplification(
+    #                 "up", self.spinBox.value()
+    #             )
+    #         )
+    #         self.pushButton_3.clicked.connect(
+    #             lambda: self.scope.set_vertical_amplification(
+    #                 "down", self.spinBox.value()
+    #             )
+    #         )
+    #         self.pushButton_8.clicked.connect(lambda: self.scope.set_timebase("left"))
+    #         self.pushButton_7.clicked.connect(lambda: self.scope.set_timebase("right"))
+    #         print(self.spinBox.value())
+    #         time.sleep(delay)
 
 if __name__ == "__main__":
     import sys
