@@ -4,7 +4,7 @@ import pyvisa as visa
 class Oscilloscope:
     def __init__(self, ip: str) -> None:
         """ " Connect to instrument, create new Oscilloscope object"""
-        self.rm = visa.ResourceManager()
+        self.rm = visa.ResourceManager('@sim')
         # self.inst = self.rm.open_resource(self.rm.list_resources()[0], read_termination='\n') # for testing purposes
         self.inst = self.rm.open_resource("TCPIP0::192.168.0." + str(ip) + "::INSTR")
         self.idn = self.inst.query("*IDN?")
@@ -84,17 +84,17 @@ class Oscilloscope:
 
     def get_horizontal_offset(self) -> float:
         """ " Get value of timebase offset"""
-        return float(self.inst.query(":TIMebase:WINDow:POSition?"))
+        return float(self.inst.query(":TIMebase:POSition?"))
 
     def set_horizontal_offset(self, op: str) -> None:
         """ " Set value of timebase offset"""
         if op == "left":
             self.inst.write(
-                ":TIMebase:WINDow:POSition " + str(self.get_horizontal_offset() / 1.5)
+                ":TIMebase:POSition " + str(self.get_horizontal_offset() / 1.5)
             )
         elif op == "right":
             self.inst.write(
-                ":TIMebase:WINDow:POSition " + str(self.get_horizontal_offset() * 1.5)
+                ":TIMebase:POSition " + str(self.get_horizontal_offset() * 1.5)
             )
 
     def close(self) -> None:
